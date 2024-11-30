@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { first151Pokemon, getFullPokedexNumber } from '../utils';
 
 export default function SideNav({
   selectedPokemon,
   setSelectedPokemon,
-  handleToggleSideMenu,
+  handleCloseSideMenu,
   showSideMenu,
 }) {
   const [searchValue, setSearchValue] = useState('');
@@ -18,13 +19,12 @@ export default function SideNav({
     return false;
   });
 
-  
   //* MARK: JSX
   return (
-    <nav className={' ' + (!showSideMenu ? ' open' : '')} >
-      <div className={'header ' + (!showSideMenu ? 'open' : '')}  >
-        <button onClick={handleToggleSideMenu} className="open-nav-button">
-        <i className="fa-solid fa-arrow-left-long"></i>
+    <nav className={' ' + (!showSideMenu ? ' open' : '')}>
+      <div className={'header ' + (!showSideMenu ? 'open' : '')}>
+        <button onClick={handleCloseSideMenu} className="open-nav-button">
+          <i className="fa-solid fa-arrow-left-long"></i>
         </button>
         <h1 className="text-gradient">Poke&#769;dex</h1>
       </div>
@@ -37,8 +37,12 @@ export default function SideNav({
       {filteredPokemon.map((pokemon, pokemonIndex) => {
         const truePokedexNumber = first151Pokemon.indexOf(pokemon);
         return (
+          
           <button
-            onClick={() => setSelectedPokemon(truePokedexNumber)}
+            onClick={() => {
+              setSelectedPokemon(truePokedexNumber);
+              handleCloseSideMenu();
+            }}
             key={pokemonIndex}
             className={
               'nav-card ' +
